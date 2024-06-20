@@ -33,7 +33,7 @@ const TextInputCM = (props: Props) => {
   useEffect(() => {
     if (!isEmpty(value)) {
       setShowPlaceholder(true);
-      animateTransform(-45);
+      animateTransform(-25);
     } else {
       setShowPlaceholder(false);
       animateTransform(0);
@@ -71,7 +71,7 @@ const TextInputCM = (props: Props) => {
 
   const transX = transLable.current.interpolate({
     inputRange: [-40, 0],
-    outputRange: [10, 0],
+    outputRange: [10, 10],
     extrapolate: 'clamp',
   });
 
@@ -118,9 +118,10 @@ const styles = StyleSheet.create({
   },
   lableContainer: {
     position: 'absolute',
-    padding: 14,
     backgroundColor: '#fff',
-    marginStart: 6
+    marginStart: 6,
+    justifyContent: 'center',
+    marginTop: 13
   },
   focusedInput: {
     borderColor: 'blue',
