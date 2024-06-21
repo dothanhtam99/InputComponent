@@ -20,11 +20,14 @@ import ModalCM from './src/components/ModalCM';
 function App(): React.JSX.Element {
   const [text, setText] = useState('')
   const [visible, setVisible] = useState(false)
+
   const handleToggle = () => {
     Keyboard.dismiss()
+    setVisible(false)
   }
   
   const handleOpen = () => {
+    setVisible(true)
   }
   return (
     <TouchableWithoutFeedback onPress={handleToggle}>
@@ -32,7 +35,8 @@ function App(): React.JSX.Element {
         <Text style={{marginBottom: 20}}>Tam dt</Text>
         <TextInputCM value={text} lable="Type" onChange={(text) => setText(text)} placeholder='Type something' type='default' duration={50}/>
         <Button title='open BottomSheet' onPress={handleOpen}> </Button>
-        <ModalCM />
+
+       {visible && <ModalCM  isVisible={setVisible}/>} 
       </SafeAreaView>
 
 
