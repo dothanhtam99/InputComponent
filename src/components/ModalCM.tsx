@@ -1,5 +1,7 @@
 import {
+  Animated,
   Dimensions,
+  Easing,
   Modal,
   StyleSheet,
   Switch,
@@ -7,11 +9,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {AddCircle, ArrowLeft} from 'iconsax-react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import ToggleSwitch from 'toggle-switch-react-native'
-
+import ToggleSwitch from 'toggle-switch-react-native';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -22,14 +23,37 @@ interface Props {
 const ModalCM = (props: Props) => {
   const {isVisible} = props;
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-  const closeModal = (ivisible: any) => {
+  const toggleSwitch = () => {
+    setIsEnabled(!isEnabled);
+  };
 
-  }
+  const slide = useRef(new Animated.Value(300)).current;
+
+  const slideUp = () => {
+    Animated.timing(slide, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+      easing: Easing.ease,
+    }).start();
+  };
+
+    const slideDown = () => {
+      Animated.timing(slide, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+        easing: Easing.ease,
+      }).start();
+  };
+
+  useEffect(() => {
+    slideUp();
+    slideDown();
+  }, []);
   return (
     <View style={styles.container}>
-      <View style={styles.modalContainer}>
-
+      <Animated.View style={[styles.modalContainer, {transform: [{ translateY: slide}]}]}>
         <View style={styles.modalView}>
           <Icon name="arrowleft" color="#000" />
           <Text style={styles.textTitle}>Tải ảnh</Text>
@@ -57,11 +81,13 @@ const ModalCM = (props: Props) => {
             value={isEnabled}
           />
 
-          <TouchableOpacity style={styles.btnSave}>
-            <Text style={styles.btnText}>Lưu</Text>
-          </TouchableOpacity>
+          {
+            <TouchableOpacity style={[styles.btnSave, {backgroundColor: isEnabled ? '#1E90FF' : '#A9A9A9'} ]} disabled={isEnabled}>
+              <Text style={styles.btnText}>Lưu</Text>
+            </TouchableOpacity>
+          }
         </View>
-      </View>
+      </Animated.View>
     </View>
   );
 };
@@ -116,7 +142,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   btnSave: {
-    backgroundColor: '#1E90FF',
+    // backgroundColor: '#1E90FF',
     borderRadius: 10,
     padding: 14,
   },
